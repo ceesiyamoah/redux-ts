@@ -1,42 +1,23 @@
+import { ActionType } from '../action-types';
+import { Action } from '../action';
 interface RepositoriesState {
 	data: string[];
 	loading: boolean;
 	error: string | null;
 }
 
-type Action = SearchRepositoriesAction | SearchRepositoriesSuccessAction | SearchRepositoriesErrorAction;
-
-interface SearchRepositoriesAction {
-	type: 'search_repositories';
-	payload: string;
-}
-interface SearchRepositoriesSuccessAction {
-	type: 'search_repositories_success';
-	payload: string[];
-}
-interface SearchRepositoriesErrorAction {
-	type: 'search_repositories_error';
-	payload: string;
-}
-
-enum ActionType {
-	SEARCH_REPOSITORIES = 'search_repositories',
-	SEARCH_REPOSITORIES_ERROR = 'search_repositories_error',
-	SEARCH_REPOSITORIES_SUCCESS = 'search_repositories_success',
-}
-
-const reducer = (state: RepositoriesState, { type, payload }: Action): RepositoriesState => {
-	switch (type) {
+const RepositoriesReducer = (state: RepositoriesState, action: Action): RepositoriesState => {
+	switch (action.type) {
 		case ActionType.SEARCH_REPOSITORIES:
 			return { loading: true, error: null, data: [] };
-		case 'search_repositories_success':
-			return { loading: false, error: null, data: payload };
-		case 'search_repositories_error':
-			return { loading: false, error: payload, data: [] };
+		case ActionType.SEARCH_REPOSITORIES_SUCCESS:
+			return { loading: false, error: null, data: action.payload };
+		case ActionType.SEARCH_REPOSITORIES_ERROR:
+			return { loading: false, error: action.payload, data: [] };
 
 		default:
 			return state;
 	}
 };
 
-export default reducer;
+export default RepositoriesReducer;
